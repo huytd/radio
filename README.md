@@ -4,4 +4,4 @@
 
 Radio player frontend for [shout](https://github.com/duythinht/shout).
 
-Try it online: https://wadio.vercel.app
+Try it online: [https://wadio.vercel.app](https://wadio.vercel.app)
