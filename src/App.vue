@@ -24,7 +24,7 @@ socket.addEventListener("error", (event) => {
 
 socket.addEventListener("message", (event) => {
 
-  if (event.data.length == 1) {
+  if (event.data.length <= 1) {
     return
   }
 
@@ -32,6 +32,7 @@ socket.addEventListener("message", (event) => {
     const payload = JSON.parse(event.data);
     state.currentSong = payload.title;
     document.title = "Radio Station | " + payload.title;
+    setMediaTitle(title)
   } catch {
     console.log('ERROR parsing data');
   }
@@ -41,6 +42,50 @@ const playButtonHandler = () => {
   audioRef.value?.play();
   state.playing = true;
 }
+
+
+const setMediaTitle = (title) => {
+  if ("mediaSession" in navigator) {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: title,
+      artist: "Radio Station",
+      album: "#music",
+      artwork: [
+        {
+          src: "https://raw.githubusercontent.com/duythinht/shout/master/static/radio-on-air.png",
+          sizes: "96x96",
+          type: "image/png",
+        },
+        {
+          src: "https://raw.githubusercontent.com/duythinht/shout/master/static/radio-on-air.png",
+          sizes: "128x128",
+          type: "image/png",
+        },
+        {
+          src: "https://raw.githubusercontent.com/duythinht/shout/master/static/radio-on-air.png",
+          sizes: "192x192",
+          type: "image/png",
+        },
+        {
+          src: "https://raw.githubusercontent.com/duythinht/shout/master/static/radio-on-air.png",
+          sizes: "256x256",
+          type: "image/png",
+        },
+        {
+          src: "https://raw.githubusercontent.com/duythinht/shout/master/static/radio-on-air.png",
+          sizes: "384x384",
+          type: "image/png",
+        },
+        {
+          src: "https://raw.githubusercontent.com/duythinht/shout/master/static/radio-on-air.png",
+          sizes: "512x512",
+          type: "image/png",
+        },
+      ],
+    });
+  }
+}
+
 
 onBeforeUnmount(() => {
   console.log("Close connection");
