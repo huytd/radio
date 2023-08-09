@@ -32,7 +32,7 @@ socket.addEventListener("message", (event) => {
     const payload = JSON.parse(event.data);
     state.currentSong = payload.title;
     document.title = "Radio Station | " + payload.title;
-    setMediaTitle(title)
+    setMediaTitle(payload.title);
   } catch {
     console.log('ERROR parsing data');
   }
@@ -84,7 +84,7 @@ const setMediaTitle = (title) => {
       ],
     });
   }
-}
+};
 
 
 onBeforeUnmount(() => {
