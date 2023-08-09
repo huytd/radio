@@ -9,27 +9,25 @@ const backgroundImage = (url) => `background-image: url(${url})`;
 const audioRef = ref(null);
 const state = reactive({ playing: false, currentSong: '[Waiting...]' });
 const socket = new WebSocket("wss://radio.0x97a.com/now-playing");
-let aliveTimer = null;
 
 socket.addEventListener("open", (event) => {
   console.log("Connected to server");
-  aliveTimer = setInterval(() => {
-    // Ping the server every 30s to keep the connection 
-    socket.send("ping");
-  }, 30 * 1000);
 });
 
 socket.addEventListener("close", (event) => {
   console.log("Connection closed", event.code, event.reason);
-  clearInterval(aliveTimer);
 });
 
 socket.addEventListener("error", (event) => {
   console.log("Connection error", event);
-  clearInterval(aliveTimer);
 });
 
 socket.addEventListener("message", (event) => {
+
+  if (event.data.length == 1) {
+    return
+  }
+
   try {
     const payload = JSON.parse(event.data);
     state.currentSong = payload.title;
@@ -47,7 +45,6 @@ const playButtonHandler = () => {
 onBeforeUnmount(() => {
   console.log("Close connection");
   socket.close();
-  clearInterval(aliveTimer);
 });
 </script>
 
